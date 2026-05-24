@@ -26,8 +26,6 @@
 
   </div>
 
-  <!--FILTROS-->
-
   <div class="filters">
 
     <input
@@ -39,7 +37,6 @@
 
     <select [(ngModel)]="selectedClient" (change)="applyFilters()">
       <option value="">Todos los clientes</option>
-
       <option *ngFor="let client of clients" [value]="client">
         {{ client }}
       </option>
@@ -61,8 +58,6 @@
 
   </div>
 
-  <!--TARJETAS-->
-
   <div class="cards">
 
     <div class="card" *ngFor="let project of filteredProjects">
@@ -74,14 +69,9 @@
       <h2>{{ project.name }}</h2>
 
       <p><strong>Cliente:</strong> {{ project.client }}</p>
-
       <p><strong>Prioridad:</strong> {{ project.priority }}</p>
-
       <p><strong>Estado:</strong> {{ project.status }}</p>
-
       <p><strong>Progreso:</strong> {{ project.progress }}%</p>
-
-      <!--CAMBIO DE ESTADO-->
 
       <div class="status-buttons">
 
@@ -99,9 +89,32 @@
 
       </div>
 
-      <!--ENTREGABLES-->
-
       <h3>Entregables</h3>
+
+      <div class="deliverable-form">
+
+        <input
+          type="text"
+          placeholder="Descripción del entregable"
+          [(ngModel)]="newDeliverableDescription"
+        >
+
+        <input
+          type="date"
+          [(ngModel)]="newDeliverableDate"
+        >
+
+        <input
+          type="text"
+          placeholder="Archivo simulado: informe.pdf"
+          [(ngModel)]="newDeliverableFile"
+        >
+
+        <button (click)="addDeliverable(project)">
+          Agregar entregable
+        </button>
+
+      </div>
 
       <div
         class="deliverable"
@@ -113,12 +126,9 @@
         </p>
 
         <p>Fecha: {{ deliverable.dueDate }}</p>
-
         <p>Archivo: {{ deliverable.file }}</p>
 
       </div>
-
-      <!--COMENTARIOS-->
 
       <h3>Comentarios</h3>
 
@@ -128,9 +138,7 @@
       >
 
         <p><strong>{{ comment.user }}</strong></p>
-
         <p>{{ comment.message }}</p>
-
         <small>{{ comment.date }}</small>
 
       </div>

@@ -22,6 +22,10 @@ export class Dashboard {
   selectedStatus = '';
   selectedPriority = '';
 
+  newDeliverableDescription = '';
+  newDeliverableDate = '';
+  newDeliverableFile = '';
+
   totalProjects = 0;
   inProgress = 0;
   finished = 0;
@@ -32,9 +36,7 @@ export class Dashboard {
   constructor(private projectService: ProjectService) {
     this.projects = this.projectService.getProjects();
     this.filteredProjects = this.projects;
-
     this.clients = [...new Set(this.projects.map(project => project.client))];
-
     this.updateSummary();
   }
 
@@ -55,14 +57,9 @@ export class Dashboard {
           deliverable.description.toLowerCase().includes(search)
         );
 
-      const matchClient =
-        this.selectedClient === '' || project.client === this.selectedClient;
-
-      const matchStatus =
-        this.selectedStatus === '' || project.status === this.selectedStatus;
-
-      const matchPriority =
-        this.selectedPriority === '' || project.priority === this.selectedPriority;
+      const matchClient = this.selectedClient === '' || project.client === this.selectedClient;
+      const matchStatus = this.selectedStatus === '' || project.status === this.selectedStatus;
+      const matchPriority = this.selectedPriority === '' || project.priority === this.selectedPriority;
 
       return matchSearch && matchClient && matchStatus && matchPriority;
     });
@@ -85,5 +82,26 @@ export class Dashboard {
     return project.deliverables.some(deliverable =>
       !deliverable.delivered && new Date(deliverable.dueDate) < today
     );
+  }
+
+  addDeliverable(project: Project): void {
+    if (!this.newDeliverableDescription || !this.newDeliverableDate || !this.newDeliverableFile) {
+      alert('Completa descripción, fecha y archivo simulado.');
+      return;
+    }
+
+    project.deliverables.push({
+      id: project.deliverables.length + 1,
+      description: this.newDeliverableDescription,
+      dueDate: this.newDeliverableDate,
+      delivered: false,
+      file: this.newDeliverableFile
+    });
+
+    this.newDeliverableDescription = '';
+    this.newDeliverableDate = '';
+    this.newDeliverableFile = '';
+
+    this.applyFilters();
   }
 }

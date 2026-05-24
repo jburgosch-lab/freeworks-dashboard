@@ -180,3 +180,44 @@ h1 {
   }
 
 }
+
+.deliverable-form {
+  background: #0f172a;
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid #334155;
+  margin-bottom: 18px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.deliverable-form input {
+  padding: 13px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #020617;
+  color: white;
+  font-size: 14px;
+}
+
+.deliverable-form input:focus {
+  outline: none;
+  border-color: #38bdf8;
+}
+
+.deliverable-form button {
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: #22c55e;
+  color: #020617;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.deliverable-form button:hover {
+  background: #16a34a;
+  transform: scale(1.03);
+}
