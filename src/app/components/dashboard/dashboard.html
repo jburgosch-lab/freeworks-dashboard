@@ -1,0 +1,150 @@
+<div class="dashboard">
+
+  <h1>FreeWorks Dashboard</h1>
+
+  <div class="summary">
+
+    <div class="summary-card">
+      <h3>Total</h3>
+      <p>{{ totalProjects }}</p>
+    </div>
+
+    <div class="summary-card">
+      <h3>En progreso</h3>
+      <p>{{ inProgress }}</p>
+    </div>
+
+    <div class="summary-card">
+      <h3>Finalizados</h3>
+      <p>{{ finished }}</p>
+    </div>
+
+    <div class="summary-card">
+      <h3>Atrasados</h3>
+      <p>{{ late }}</p>
+    </div>
+
+  </div>
+
+  <div class="filters">
+
+    <input
+      type="text"
+      placeholder="Buscar proyecto o entregable..."
+      [(ngModel)]="searchText"
+      (input)="applyFilters()"
+    >
+
+    <select [(ngModel)]="selectedClient" (change)="applyFilters()">
+      <option value="">Todos los clientes</option>
+      <option *ngFor="let client of clients" [value]="client">
+        {{ client }}
+      </option>
+    </select>
+
+    <select [(ngModel)]="selectedStatus" (change)="applyFilters()">
+      <option value="">Todos los estados</option>
+      <option value="En progreso">En progreso</option>
+      <option value="Finalizado">Finalizado</option>
+      <option value="Atrasado">Atrasado</option>
+    </select>
+
+    <select [(ngModel)]="selectedPriority" (change)="applyFilters()">
+      <option value="">Todas las prioridades</option>
+      <option value="Alta">Alta</option>
+      <option value="Media">Media</option>
+      <option value="Baja">Baja</option>
+    </select>
+
+  </div>
+
+  <div class="cards">
+
+    <div class="card" *ngFor="let project of filteredProjects">
+
+      <div class="late-alert" *ngIf="hasLateDeliverables(project)">
+        ⚠ Proyecto con entregas atrasadas
+      </div>
+
+      <h2>{{ project.name }}</h2>
+
+      <p><strong>Cliente:</strong> {{ project.client }}</p>
+      <p><strong>Prioridad:</strong> {{ project.priority }}</p>
+      <p><strong>Estado:</strong> {{ project.status }}</p>
+      <p><strong>Progreso:</strong> {{ project.progress }}%</p>
+
+      <div class="status-buttons">
+
+        <button (click)="changeStatus(project, 'En progreso')">
+          En progreso
+        </button>
+
+        <button (click)="changeStatus(project, 'Finalizado')">
+          Finalizado
+        </button>
+
+        <button (click)="changeStatus(project, 'Atrasado')">
+          Atrasado
+        </button>
+
+      </div>
+
+      <h3>Entregables</h3>
+
+      <div class="deliverable-form">
+
+        <input
+          type="text"
+          placeholder="Descripción del entregable"
+          [(ngModel)]="newDeliverableDescription"
+        >
+
+        <input
+          type="date"
+          [(ngModel)]="newDeliverableDate"
+        >
+
+        <input
+          type="text"
+          placeholder="Archivo simulado: informe.pdf"
+          [(ngModel)]="newDeliverableFile"
+        >
+
+        <button (click)="addDeliverable(project)">
+          Agregar entregable
+        </button>
+
+      </div>
+
+      <div
+        class="deliverable"
+        *ngFor="let deliverable of project.deliverables"
+      >
+
+        <p>
+          <strong>{{ deliverable.description }}</strong>
+        </p>
+
+        <p>Fecha: {{ deliverable.dueDate }}</p>
+        <p>Archivo: {{ deliverable.file }}</p>
+
+      </div>
+
+      <h3>Comentarios</h3>
+
+      <div
+        class="comment"
+        *ngFor="let comment of project.comments"
+      >
+
+        <p><strong>{{ comment.user }}</strong></p>
+        <p>{{ comment.message }}</p>
+        <small>{{ comment.date }}</small>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
